@@ -24,7 +24,7 @@ import { MODULE_TITLE } from "../shared/constants.mjs";
 
 let installed = false;
 
-/** Wire the chat hook. Idempotent. */
+/** Wire the chat command interception. Idempotent. */
 export function initChatCommands() {
   if (installed) return;
   installed = true;
@@ -33,23 +33,38 @@ export function initChatCommands() {
   // `/voicekey` or `/voice-stuff`.
   const PREFIX_RE = /^\/voice(\s|$)/i;
 
-  Hooks.on("chatMessage", (chatLog, raw, chatData) => {
-    const text = String(raw ?? "").trim();
-    if (!PREFIX_RE.test(text)) return; // not ours
+  // v13+ rewrote chat input into a ProseMirror plugin whose slash-command
+  // parser rejects unrecognized commands before the `chatMessage` hook
+  // fires — so returning false from that hook can't suppress the
+  // "is not a valid chat message command" error. Wrap processMessage so
+  // /voice is claimed before Foundry's parser runs.
+  const ChatLogClass =
+    foundry?.applications?.sidebar?.tabs?.ChatLog ?? globalThis.ChatLog;
+  if (!ChatLogClass?.prototype?.processMessage) {
+    console.error(
+      `${MODULE_TITLE} | could not locate ChatLog.processMessage; /voice commands will not work`,
+    );
+    return;
+  }
 
+  const originalProcess = ChatLogClass.prototype.processMessage;
+  ChatLogClass.prototype.processMessage = function (message, ...rest) {
+    const text = String(message ?? "").trim();
+    if (!PREFIX_RE.test(text)) {
+      return originalProcess.call(this, message, ...rest);
+    }
     if (!game.user?.isGM) {
       ui.notifications?.warn(`${MODULE_TITLE} commands require GM access.`);
-      return false;
+      return Promise.resolve(null);
     }
-
     handleCommand(text).catch((err) =>
-      postPrivate(`Command failed: ${escapeHtml(err.message ?? String(err))}`).catch((postErr) =>
-        console.error(`${MODULE_TITLE} | failed to post error chat`, postErr),
+      postPrivate(`Command failed: ${escapeHtml(err.message ?? String(err))}`).catch(
+        (postErr) =>
+          console.error(`${MODULE_TITLE} | failed to post error chat`, postErr),
       ),
     );
-
-    return false; // suppress the original message
-  });
+    return Promise.resolve(null);
+  };
 }
 
 async function handleCommand(text) {

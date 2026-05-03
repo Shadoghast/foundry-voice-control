@@ -2,6 +2,12 @@
 
 All notable changes to Foundry Voice Control. Following [semver](https://semver.org/) and [Keep a Changelog](https://keepachangelog.com/) loosely.
 
+## [0.1.1] — 2026-05-02
+
+### Fixed
+
+- `/voice` chat commands now work on Foundry v14. The v13 chat-input rewrite (ProseMirror) means the legacy `Hooks.on("chatMessage", ...)` pattern returning `false` no longer suppresses the "is not a valid chat message command" error for unrecognized slash commands. Switched to wrapping `ChatLog.prototype.processMessage` so `/voice` is claimed before Foundry's slash-command parser runs.
+
 ## [0.1.0] — 2026-05-02
 
 First releasable build. Voice-controlled operation of Foundry VTT v14 via an HTTP+socket MCP module.
