@@ -49,7 +49,7 @@ export function initChatCommands() {
 
   const originalProcess = ChatLogClass.prototype.processMessage;
   ChatLogClass.prototype.processMessage = function (message, ...rest) {
-    const text = String(message ?? "").trim();
+    const text = extractCommandText(message);
     if (!PREFIX_RE.test(text)) {
       return originalProcess.call(this, message, ...rest);
     }
@@ -65,6 +65,17 @@ export function initChatCommands() {
     );
     return Promise.resolve(null);
   };
+}
+
+// ProseMirror wraps chat input in `<p>...</p>` before handing it to
+// processMessage. Strip the wrapper (and decode entities like `&quot;`)
+// so the command parser sees the user's literal text.
+function extractCommandText(message) {
+  const raw = String(message ?? "").trim();
+  if (!raw.startsWith("<")) return raw;
+  const tmp = document.createElement("div");
+  tmp.innerHTML = raw;
+  return (tmp.textContent ?? "").trim();
 }
 
 async function handleCommand(text) {

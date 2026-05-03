@@ -1,6 +1,6 @@
 {
   "name": "foundry-voice-control",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Foundry-side MCP module for voice-controlled operation of Foundry VTT.",
   "type": "module",
   "private": true,

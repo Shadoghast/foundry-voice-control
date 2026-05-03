@@ -2,6 +2,12 @@
 
 All notable changes to Foundry Voice Control. Following [semver](https://semver.org/) and [Keep a Changelog](https://keepachangelog.com/) loosely.
 
+## [0.1.2] — 2026-05-02
+
+### Fixed
+
+- `/voice` now matches even after ProseMirror wraps chat input in `<p>...</p>`. v0.1.1 added a `processMessage` wrap but tested its regex against the raw HTML, so the wrapper made it fall through. The wrap now extracts text content (and decodes entities) before matching, and passes the cleaned text to the command handler.
+
 ## [0.1.1] — 2026-05-02
 
 ### Fixed
