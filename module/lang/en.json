@@ -1,0 +1,9 @@
+{
+  "FOUNDRY_VOICE_CONTROL.SettingsTitle": "Foundry Voice Control",
+  "FOUNDRY_VOICE_CONTROL.IpAllowlist.Name": "IP allowlist",
+  "FOUNDRY_VOICE_CONTROL.IpAllowlist.Hint": "Comma-separated CIDRs allowed to call the module API. Leave empty for no restriction. Loopback is always allowed.",
+  "FOUNDRY_VOICE_CONTROL.UrlAllowlist.Name": "Image URL allowlist",
+  "FOUNDRY_VOICE_CONTROL.UrlAllowlist.Hint": "Comma-separated hosts that may serve images via set_token_image / set_actor_image. Leave empty to disable URL-based image fetching (paths under user data still work).",
+  "FOUNDRY_VOICE_CONTROL.RespectOwnership.Name": "Respect actor ownership",
+  "FOUNDRY_VOICE_CONTROL.RespectOwnership.Hint": "When enabled, find_actor and list_items hide actors with restricted ownership for non-GM-scope keys."
+}

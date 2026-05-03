@@ -1,0 +1,20 @@
+/*
+ * Foundry Voice Control — minimal stylesheet.
+ *
+ * Layered per Foundry v13/v14 conventions so we don't fight the core cascade.
+ * Real settings UI styles land in sub-stage 3g.
+ */
+
+@layer foundry-voice-control-base, foundry-voice-control-components, foundry-voice-control-overrides;
+
+@layer foundry-voice-control-base {
+  /* Reserved for base structural styles. */
+}
+
+@layer foundry-voice-control-components {
+  /* Reserved for component styles (settings panel, chat command output). */
+}
+
+@layer foundry-voice-control-overrides {
+  /* Reserved for tightly scoped overrides only. */
+}

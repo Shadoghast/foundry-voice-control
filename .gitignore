@@ -1,0 +1,40 @@
+# Dependencies (regenerated from package-lock.json on `npm install`)
+node_modules/
+module/node_modules/
+
+# Vitest scratch files
+.vitest/
+module/.vitest/
+**/vitest.config.mjs.timestamp-*
+
+# Test coverage
+coverage/
+module/coverage/
+
+# Build artifacts
+dist/
+build/
+*.zip
+release/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime files (should never be in repo, but defensive)
+keys.json
+audit.log
